@@ -3,6 +3,9 @@ from .models import Product
 
 class ProductsFilter(filters.FilterSet):
 
+    keyword = filters.CharFilter(field_name="name", lookup_expr="icontains")
+    min_price  = filters.NumberFilter(field_name="price" or 0, lookup_expr="gte")
+
     class Meta:
         model = Product
-        fields = ('category', 'brand')
+        fields = ('category', 'brand', 'keyword', 'min_price')
