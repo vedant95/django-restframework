@@ -3,9 +3,17 @@ from .models import Product, Reviews
 
 class ProductSerializer(serializers.ModelSerializer):
 
+    reviews = serializers.SerializerMethodField(method_name='get_reviews', read_only=True)
+
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('id', 'name', 'description', 'price', 'brand', 'ratings', 'category', 'stock', 'user', 'reviews')
+
+
+    def get_reviews(self, obj):
+        reviews = obj.reviews.all()
+        serializer = ReviewSeializer(reviews, many=True)
+        return serializer.data
 
 
 class ReviewSeializer(serializers.ModelSerializer):
